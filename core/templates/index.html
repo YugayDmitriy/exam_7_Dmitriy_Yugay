@@ -17,17 +17,17 @@
     <header class="site-header">
       <nav class="navbar navbar-expand-md navbar-dark bg-blue fixed-top">
         <div class="container">
-          <a class="navbar-brand mr-4" href="#"><i class='bx bxs-rocket bx-tada-hover'></i> Visitors 7 Python Bytes</a>
+          <a class="navbar-brand mr-4" href="{%url 'index' %}"><i class='bx bxs-rocket bx-tada-hover'></i> Visitors 7 Python Bytes</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarToggle">
             <div class="navbar-nav mr-auto">
-              <a class="nav-item nav-link " href="#">Главная</a>
-              <a class="nav-item nav-link" href="#">История</a>
+              <a class="nav-item nav-link " href="#"></a>
+              <a class="nav-item nav-link" href="#"></a>
             </div>
             <div class="navbar-nav">
-              <a class="nav-item nav-link" href="#">Visitors &nbsp |</a>
+              <a class="nav-item nav-link" href="{%url 'index' %}">Главная &nbsp |</a>
             </div>
           </div>
         </div>
@@ -37,22 +37,17 @@
         {% for message in messages %}
           <p class="alert alert-success mt-3">{{message}}</p>
           {% endfor %}
+        {% block content %}
         {% if sel_visit %}
             <form method="POST" action="{%url 'update' sel_visit.id%}">
              {% csrf_token %}
             <div class="form-group text-center mt-3">
-                <label for="inputPrice" class="col-form-label">Имя</label>
-                <input type="text" id="inputPrice" class="form-control" name="name" value="{{sel_visit.name}}" aria-describedby="inputGroupPrepend2" required>
+                <label for="inputName" class="col-form-label">Имя</label>
+                <input type="text" id="inputName" class="form-control" name="name" value="{{sel_visit.name}}" aria-describedby="inputGroupPrepend2" required>
             </div>
             <div class="form-group text-center mt-3">
-                <label for="validationCustomUsername" class="form-label">Email</label>
-                <div class="input-group has-validation">
-                <span class="input-group-text" id="inputGroupPrepend">@</span>
-                <input type="text" class="form-control" name="email" value="{{sel_visit.email}}" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
-                </div>
-                <div class="invalid-feedback">
-                Please choose a username.
-                </div>
+                <label for="validationCustomEmail" class="form-label">Email</label>
+                <input type="text" class="form-control" name="email" value="{{sel_visit.email}}" id="validationCustomEmail" aria-describedby="inputGroupPrepend" required>
             </div>
             <div class="form-group text-center mt-3">
               <label for="validationDefaultText" class="form-label">Описание</label>
@@ -72,13 +67,8 @@
                 <input type="text" id="inputPrice" class="form-control" name="name" placeholder="Введите имя" aria-describedby="inputGroupPrepend2" required>
             </div>
             <div class="form-group text-center mt-3">
-                <label for="validationCustomUsername" class="form-label">Email</label>
-                <div class="input-group has-validation">
-                <span class="input-group-text" id="inputGroupPrepend">@</span>
-                <input type="text" class="form-control" name="email" placeholder="Введите email" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
-                </div>
-                <div class="invalid-feedback">
-                Please choose a username.
+                <label for="validationEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" placeholder="ivanov.ivan@gmail.com" id="validationEmail" aria-describedby="inputGroupPrepend" required>
                 </div>
             </div>
             <div class="form-group text-center mt-3">
@@ -110,16 +100,17 @@
                  <td>{{i.email}}</td>
                  <td>{{i.text}}</td>
                  <td>
-                    <a href="{% url 'edit' i.id %}" class="btn btn-warning" data-toggle="modal"></a><i class="fa fa-trash"></i>Trash</button>
+                    <a href="{% url 'edit' i.id %}"><img src="static/image/edit.png" class="btn-warning" width="30" height="35" alt="Изменить"></a>
                  </td>
                  <td>
-                    <a href="{% url 'delete' i.id %}" class="btn btn-warning">&#xE872;</i></a>
+                    <a href="{% url 'delete' i.id %}"><img src="static/image/trash.png" class="btn-danger" width="30" height="35" alt="Корзина"></a>
                  </td>
              </tr>
           {% endfor %}
           </tbody>
           </table>
         </div>
+        {% endblock %}
     </main>
     <footer class="text-center bg-dark">
       <p><a href="#">© Visitors Python Bytes 2022</a></p>

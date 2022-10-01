@@ -3,4 +3,8 @@ from webapp.models import Visitors
 
 
 def index(request):
-    return render(request, 'index.html')
+    visit_list = Visitors.objects.exclude(status='blocked')
+    context = {
+        'visit_list': visit_list
+    }
+    return render(request, 'index.html', context=context)

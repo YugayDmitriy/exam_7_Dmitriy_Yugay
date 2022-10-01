@@ -6,15 +6,15 @@ from django.contrib import messages
 def create(request):
     if request.method == "POST":
         name = request.POST['name']
-        discription = request.POST['discription']
-        created_at = request.POST['created_at']
-        item = Visitors(name=name, discription=discription, created_at=created_at)
+        email = request.POST['email']
+        text = request.POST['text']
+        item = Visitors(name=name, email=email, text=text)
         item.save()
         messages.info(request, "Задача успешно добавлена")
     else:
         pass
-    item_list = Visitors.objects.all()
+    visit_list = Visitors.objects.all()
     context = {
-        'item_list': item_list
+        'visit_list': visit_list
     }
-    return render(request, 'create.html', context=context)
+    return render(request, 'index.html', context=context)
