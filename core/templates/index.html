@@ -2,15 +2,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
      <link href='http://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900italic,900' rel='stylesheet' type='text/css'>
      <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
      <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
      <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-
         <title>Visitors</title>
         <title>Python Bytes</title>
 </head>
@@ -35,7 +34,37 @@
       </nav>
     </header>
     <main role="main" class="container">
-        {% block content %}
+        {% for message in messages %}
+          <p class="alert alert-success mt-3">{{message}}</p>
+          {% endfor %}
+        {% if sel_visit %}
+            <form method="POST" action="{%url 'update' sel_visit.id%}">
+             {% csrf_token %}
+            <div class="form-group text-center mt-3">
+                <label for="inputPrice" class="col-form-label">Имя</label>
+                <input type="text" id="inputPrice" class="form-control" name="name" value="{{sel_visit.name}}" aria-describedby="inputGroupPrepend2" required>
+            </div>
+            <div class="form-group text-center mt-3">
+                <label for="validationCustomUsername" class="form-label">Email</label>
+                <div class="input-group has-validation">
+                <span class="input-group-text" id="inputGroupPrepend">@</span>
+                <input type="text" class="form-control" name="email" value="{{sel_visit.email}}" id="validationCustomUsername" aria-describedby="inputGroupPrepend" required>
+                </div>
+                <div class="invalid-feedback">
+                Please choose a username.
+                </div>
+            </div>
+            <div class="form-group text-center mt-3">
+              <label for="validationDefaultText" class="form-label">Описание</label>
+                <div class="input-group">
+                <input type="text" class="form-control" name="text" value="{{sel_visit.text}}" id="validationDefaultText"  aria-describedby="inputGroupPrepend2" required>
+                </div>
+            </div>
+            <div class="form-group mt-4 text-center">
+                <button type="submit" class="btn btn-primary">Сохранить</button>
+            </div>
+          </form>
+        {% else %}
             <form method="POST" action="{%url 'create'%}">
              {% csrf_token %}
             <div class="form-group text-center mt-3">
@@ -59,9 +88,10 @@
                 </div>
             </div>
             <div class="form-group mt-4 text-center">
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Добавить</button>
             </div>
           </form>
+        {% endif %}
         <div class="mt-5">
           <table class="table table-bordered">
            <thead>
@@ -74,23 +104,22 @@
              </tr>
            </thead>
            <tbody>
-           {% for i in item_list%}
+           {% for i in visit_list%}
               <tr>
                  <td>{{i.name}} </td>
                  <td>{{i.email}}</td>
                  <td>{{i.text}}</td>
                  <td>
-                    <a href="#" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a>
+                    <a href="{% url 'edit' i.id %}" class="btn btn-warning" data-toggle="modal"></a><i class="fa fa-trash"></i>Trash</button>
                  </td>
                  <td>
-                    <a href="#" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a>
+                    <a href="{% url 'delete' i.id %}" class="btn btn-warning">&#xE872;</i></a>
                  </td>
              </tr>
           {% endfor %}
           </tbody>
           </table>
         </div>
-        {% endblock %}
     </main>
     <footer class="text-center bg-dark">
       <p><a href="#">© Visitors Python Bytes 2022</a></p>
